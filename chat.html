@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Chat</title>
+  <style>
+    #chatContainer {
+      border: 1px solid #ccc;
+      padding: 20px;
+      height: 430px;
+      overflow-y: scroll;
+      margin-bottom: 20px;
+      margin: 0 auto; /* Center the container */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow for better aesthetics */
+      border-radius: 5px; /* Rounded corners */
+    }
+    .message {
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+      font-family: Arial, sans-serif; /* Font style */
+      font-size: 13px; /* Set font size */
+    }
+    #chatInputContainer {
+      display: flex;
+      align-items: center;
+    }
+    #chatInput {
+      flex-grow: 1;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px; /* Rounded corners */
+    }
+    #sendButton {
+      padding: 5px 10px;
+      margin-left: 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px; /* Rounded corners */
+      font-size: 16px; /* Increased font size */
+    }
+    #sendButton:hover {
+      background-color: #45a049;
+    }
+    #backButton {
+      padding: 5px 10px;
+      margin-left: 5px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px; /* Rounded corners */
+      font-size: 16px; /* Increased font size */
+    }
+    #backButton:hover {
+      background-color: #e53935;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div id="chatContainer">
+    <div class="message">
+      Bot: Hi, welcome to chat assistance, how can I help you?<br>
+      1. <strong>/analyzeTopSalesProducts</strong>: I will analyze the top product sales for you.<br>
+      2. <strong>/quit</strong>: Session end.
+    </div>
+  </div>
+  <div id="chatInputContainer">
+    <input id="chatInput" type="text" placeholder="Place your message here">
+    <button id="sendButton">Send</button>
+    <button id="backButton">Back</button>
+  </div>
+  <script>
+    const chatContainer = document.getElementById('chatContainer');
+    const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
+    const backButton = document.getElementById('backButton');
+
+    function addMessage(sender, text) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+      messageElement.innerHTML = `${sender}: ${text}`;
+      chatContainer.appendChild(messageElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function handleSendMessage() {
+      const message = chatInput.value.trim();
+      if (message) {
+        addMessage('You', message);
+        chatInput.value = '';
+
+        if (message === '/analyzeTopSalesProducts') {
+          runAssociationAnalysis();
+        } else if (message === '/quit') {
+          addMessage('Bot', 'Session end');
+          // setTimeout(() => {
+          //   window.location.href = 'sidebar.html';
+          // }, 1000);
+        } else {
+          // Simulate a bot response (replace with actual logic)
+          setTimeout(() => {
+            addMessage('Bot', 'Hello there!');
+          }, 1000);
+        }
+      }
+    }
+
+    sendButton.addEventListener('click', handleSendMessage);
+    chatInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        handleSendMessage();
+      }
+    });
+
+    backButton.addEventListener('click', () => {
+      // window.location.href = 'sidebar.html';
+    });
+
+    function runAssociationAnalysis() {
+      google.script.run.withSuccessHandler(displayResults).runMarketBasketAnalysis();
+    }
+
+    // Display the results
+    function displayResults(results) {
+      const table = document.createElement('table');
+      const header = table.createTHead();
+      const headerRow = header.insertRow(0);
+      headerRow.insertCell(0).innerText = 'Item 1';
+      headerRow.insertCell(1).innerText = 'Item 2';
+      headerRow.insertCell(2).innerText = 'Support';
+      headerRow.insertCell(3).innerText = 'Confidence';
+
+      const tbody = table.createTBody();
+
+      results.forEach(function(result) {
+        const row = tbody.insertRow();
+        row.insertCell(0).innerText = result.item1;
+        row.insertCell(1).innerText = result.item2;
+        row.insertCell(2).innerText = result.support;
+        row.insertCell(3).innerText = result.confidence;
+      });
+
+      chatContainer.appendChild(table);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  </script>
+</body>
+</html>

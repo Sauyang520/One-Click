@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: sans-serif; background-color: #E6E6FA; padding: 10px; }
+  .button {
+    background-color: #9370DB;  /* Deeper purple for contrast */
+    border: none;
+    color: white;
+    padding: 12px 24px;      /* Slightly increased padding */
+    text-align: center;
+    text-decoration: none;
+    display: block;           /* One button per row */
+    font-size: 16px;
+    margin: 10px auto;        /* Center buttons horizontally */
+    cursor: pointer;
+    border-radius: 8px;       /* Rounded corners */
+  }
+  .faq, .chat { margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h2>One Click</h2>
+  <div class="chat">
+    <h3>Basic</h3>
+    <button class="button" id="btnArrange">Arrange</button>
+  </div>
+  
+  <div class="chat">
+    <h3>Advanced</h3>
+    <button class="button" id="btnAssociation">Association</button>
+    <button class="button" id="btnCustomerSegment">Customer Segmentation</button>
+    <button class="button" id="btnBasketAnalysis">Market Basket Anaysis</button>
+  </div>
+
+  <div class="chat">
+    <h3>Chat</h3>
+    <button class="button" id="btnChat" onclick="runAssociationAnalysis()">Chat</button>
+  </div>
+  <script>
+    // Get references to the buttons
+    const btnArrange = document.getElementById("btnArrange");
+    const btnAssociation = document.getElementById("btnAssociation");
+    const btnCustomerSegment = document.getElementById("btnCustomerSegment");
+    const btnBasketAnalysis = document.getElementById("btnBasketAnalysis");
+    const btnFaq = document.getElementById("btnFaq");
+    const btnChat = document.getElementById("btnChat");
+
+    // Add event listeners
+    btnArrange.addEventListener("click", () => {
+      google.script.run.handleArrangeClick();
+    });
+
+    btnAssociation.addEventListener("click", () => {
+      google.script.run.handleAssociationClick();
+    });
+
+    btnCustomerSegment.addEventListener("click", () => {
+      google.script.run.handleCustomerSegmentationClick();
+    });
+
+    btnBasketAnalysis.addEventListener("click", () => {
+      google.script.run.handleBasketAnalysisClick();
+    });
+
+    btnChat.addEventListener("click", () => {
+      google.script.run.handleChatClick();
+    });
+  </script>
+</body>
+</html>
